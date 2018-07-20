@@ -7,16 +7,17 @@ let TicTacToe = function(board) {
 TicTacToe.prototype.winner = function() {
 
   // Check the dimensions of the board.
-  let numberOfRows = this.board.length;
+  let length = this.board.length;
 
-  // Print the board from the tests.
-  // this.printBoard(numberOfRows);
+  // Print the board from the test.js.
+  // this.printBoard(length);
 
   // Store the rows and columns.
-  let rows = this.getRows(numberOfRows);
+  let rows = this.getRows(length);
   let columns = this.getColumns(rows);
+  let diagonals = this.getDiagonals(rows);
 
-  return this.checkWinner(rows, columns);
+  return this.checkWinner(rows, columns, diagonals);
 };
 
 // Helper function to store the rows on the board.
@@ -56,87 +57,93 @@ TicTacToe.prototype.getColumns = (rows) => {
   return columns;
 };
 
+// Helper function to store the diagonals on the board.
+TicTacToe.prototype.getDiagonals = (rows) => {
+  // Will always only be two diagonals.
+  let diagonals = [];
+  let forwardDiagonal = [];
+  let backwardDiagonal = [];
+
+  // Start with the forward diagonal.
+  let pointer = rows.length - 1;
+
+  // Populate the forward diagonal.
+  for (let i = 0; i < rows.length; i++) {
+    for (let j = 0; j < rows.length; j++) {
+      if (j === pointer) {
+        forwardDiagonal.push(rows[i][j]);
+        pointer--;
+        break;
+      }
+    }
+  }
+
+  // Reset for the backwards diagonal.
+  pointer = 0;
+
+  // Populate the backward diagonal.
+  for (let i = 0; i < rows.length; i++) {
+    for (let j = 0; j < rows.length; j++) {
+      if (j === pointer) {
+        backwardDiagonal.push(rows[i][j]);
+        pointer++;
+        break;
+      }
+    }
+  }
+
+  diagonals.push(forwardDiagonal);
+  diagonals.push(backwardDiagonal);
+
+  return diagonals;
+};
+
 // Determines the outcome.
-TicTacToe.prototype.checkWinner = function(rows, columns) {
+TicTacToe.prototype.checkWinner = function(rows, columns, diagonals) {
   let row1 = this.board[0];
   let row2 = this.board[1];
   let row3 = this.board[2];
 
+  let outcome = "";
+
   // Check the rows for any winners.
-  let rowWinner = this.checkRows(rows);
+  outcome = this.checkArrays(rows);
 
-  // column checks
-
-  if (row1[0] == "o" && row2[0] == "o" && row3[0] == "o") {
-    return "o";
+  if (outcome !== "o" && outcome !== "x") {
+    // Check the columns for any winners.
+    outcome = this.checkArrays(columns);
   }
 
-  if (row1[1] == "o" && row2[1] == "o" && row3[1] == "o") {
-    return "o";
+  if (outcome !== "o" && outcome !== "x") {
+    // Check the diagonals for any winners.
+    outcome = this.checkArrays(diagonals);
   }
 
-  if (row1[2] == "o" && row2[2] == "o" && row3[2] == "o") {
-    return "o";
+  if (outcome !== "o" && outcome !== "x" && outcome !== "unfinished") {
+    outcome = "draw";
   }
 
-  if (row1[0] == "x" && row2[0] == "x" && row3[0] == "x") {
-    return "x";
-  }
-
-  if (row1[1] == "x" && row2[1] == "x" && row3[1] == "x") {
-    return "x";
-  }
-
-  if (row1[2] == "x" && row2[2] == "x" && row3[2] == "x") {
-    return "x";
-  }
-
-  // diagonal checks
-
-  if (row1[0] == "o" && row2[1] == "o" && row3[2] == "o") {
-    return "o";
-  }
-
-  if (row1[2] == "o" && row2[1] == "o" && row3[0] == "o") {
-    return "o";
-  }
-
-  if (row1[0] == "x" && row2[1] == "x" && row3[2] == "x") {
-    return "x";
-  }
-
-  if (row1[2] == "x" && row2[1] == "x" && row3[0] == "x") {
-    return "x";
-  }
-
-  if (rowWinner === "o") {
-    return "o";
-  } else if (rowWinner === "x") {
-    return "x";
-  }
-
-  return "draw";
+  return outcome;
 };
 
-TicTacToe.prototype.checkRows = function(rows) {
-  let outcome = "unfinished";
+// Checks the arrays for a winner.
+TicTacToe.prototype.checkArrays = function(arr) {
+  let outcome = "";
 
-  for (let i in rows) {
-    // console.log(rows[i]);
-
-    let checkRowsForO = rows[i].every((value, index, array) => {
+  for (let i in arr) {
+    let checkForO = arr[i].every((value, index, array) => {
       return value === "o";
     });
 
-    if (checkRowsForO) {
+    if (checkForO) {
       outcome = "o";
     }
 
-    let checkRowsForX = rows[i].every((value, index, array) => {
+    let checkForX = arr[i].every((value, index, array) => {
       return value === "x";
     });
 
-    if (checkRowsForX) {
+    if (checkForX) {
       outcome = "x";
     }
   }
