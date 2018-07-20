@@ -1,23 +1,94 @@
-let TicTacToe = function(board) {
+class TicTacToe {
+  constructor(board) {
+    this.board = board;
+  }
+}
+
+// Determines the winner of the game.
+TicTacToe.prototype.winner = function() {
   "use strict";
 
-  this.board = board;
-};
-
-TicTacToe.prototype.winner = function() {
-
-  // Check the dimensions of the board.
+  // Get the rows, columns and diagonals.
   let length = this.board.length;
-
-  // Print the board from the test.js.
-  // this.printBoard(length);
-
-  // Store the rows and columns.
   let rows = this.getRows(length);
   let columns = this.getColumns(rows);
   let diagonals = this.getDiagonals(rows);
 
-  return this.checkWinner(rows, columns, diagonals);
+  return this.checkOutcomes(rows, columns, diagonals);
+};
+
+// Determines the outcome.
+TicTacToe.prototype.checkOutcomes = function(rows, columns, diagonals) {
+  let outcome = "";
+
+  // Check the rows for any winners.
+  outcome = this.checkArrayWinners(rows);
+
+  if (outcome !== "o" && outcome !== "x") {
+    // Check the columns for any winners.
+    outcome = this.checkArrayWinners(columns);
+  }
+
+  if (outcome !== "o" && outcome !== "x") {
+    // Check the diagonals for any winners.
+    outcome = this.checkArrayWinners(diagonals);
+  }
+
+  if (outcome !== "o" && outcome !== "x") {
+    // Check if the game has been left unfinished.
+    outcome = this.checkIfUnfinished(rows);
+  }
+
+  if (outcome !== "o" && outcome !== "x" && outcome !== "unfinished") {
+    // Otherwise, the game is a draw.
+    outcome = "draw";
+  }
+
+  return outcome;
+};
+
+// Checks the arrays for a winner.
+TicTacToe.prototype.checkArrayWinners = function(arr) {
+  let outcome = "";
+
+  for (let i in arr) {
+    // Check if every value in the array is an "o".
+    outcome = this.checkEachTile(arr[i], "o", outcome);
+
+    // Check if every value in the array is an "x".
+    outcome = this.checkEachTile(arr[i], "x", outcome);
+  }
+
+  return outcome;
+};
+
+// Checks each tile of the array for a match.
+TicTacToe.prototype.checkEachTile = function(arr, letter, outcome) {
+  // Check if every value in the array is the same.
+  let winner = arr.every((value, index, array) => {
+    return value === letter;
+  });
+
+  if (winner) {
+    outcome = letter;
+  }
+
+  return outcome;
+};
+
+// Checks if the game is unfinished.
+TicTacToe.prototype.checkIfUnfinished = function(arr) {
+  let outcome = "";
+
+  for (let i in arr) {
+    let checkForBlank = arr[i].includes(" ");
+
+    if (checkForBlank) {
+      outcome = "unfinished";
+    }
+  }
+
+  return outcome;
 };
 
 // Helper function to store the rows on the board.
@@ -39,7 +110,7 @@ TicTacToe.prototype.getRows = function(size) {
 };
 
 // Helper function to store the columns on the board.
-TicTacToe.prototype.getColumns = (rows) => {
+TicTacToe.prototype.getColumns = function(rows) {
   let columns = [];
 
   // Initialize the columns arrays.
@@ -58,7 +129,7 @@ TicTacToe.prototype.getColumns = (rows) => {
 };
 
 // Helper function to store the diagonals on the board.
-TicTacToe.prototype.getDiagonals = (rows) => {
+TicTacToe.prototype.getDiagonals = function(rows) {
   // Will always only be two diagonals.
   let diagonals = [];
   let forwardDiagonal = [];
@@ -96,79 +167,6 @@ TicTacToe.prototype.getDiagonals = (rows) => {
   diagonals.push(backwardDiagonal);
 
   return diagonals;
-};
-
-// Determines the outcome.
-TicTacToe.prototype.checkWinner = function(rows, columns, diagonals) {
-  let row1 = this.board[0];
-  let row2 = this.board[1];
-  let row3 = this.board[2];
-
-  let outcome = "";
-
-  // Check the rows for any winners.
-  outcome = this.checkArrays(rows);
-
-  if (outcome !== "o" && outcome !== "x") {
-    // Check the columns for any winners.
-    outcome = this.checkArrays(columns);
-  }
-
-  if (outcome !== "o" && outcome !== "x") {
-    // Check the diagonals for any winners.
-    outcome = this.checkArrays(diagonals);
-  }
-
-  if (outcome !== "o" && outcome !== "x") {
-    // Check if the game has been left unfinished.
-    outcome = this.checkIfUnfinished(rows);
-  }
-
-  if (outcome !== "o" && outcome !== "x" && outcome !== "unfinished") {
-    outcome = "draw";
-  }
-
-  return outcome;
-};
-
-// Checks the arrays for a winner.
-TicTacToe.prototype.checkArrays = function(arr) {
-  let outcome = "";
-
-  for (let i in arr) {
-    let checkForO = arr[i].every((value, index, array) => {
-      return value === "o";
-    });
-
-    if (checkForO) {
-      outcome = "o";
-    }
-
-    let checkForX = arr[i].every((value, index, array) => {
-      return value === "x";
-    });
-
-    if (checkForX) {
-      outcome = "x";
-    }
-  }
-
-  return outcome;
-};
-
-// Checks if the game is unfinished.
-TicTacToe.prototype.checkIfUnfinished = function(arr) {
-  let outcome = "";
-
-  for (let i in arr) {
-    let checkForBlank = arr[i].includes(" ");
-
-    if (checkForBlank) {
-      outcome = "unfinished";
-    }
-  }
-
-  return outcome;
 };
 
 // Helper function for printing the board.
