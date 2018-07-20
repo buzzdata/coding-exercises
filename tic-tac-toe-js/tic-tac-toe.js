@@ -3,6 +3,17 @@ var TicTacToe = function(board) {
 };
 
 TicTacToe.prototype.winner = function() {
+
+  // Check the dimensions of the board.
+  var numberOfRows = this.board.length;
+
+  // Print the board
+  // this.printBoard(numberOfRows);
+
+  // Store the rows and columns.
+  var rows = this.getRows(numberOfRows);
+  var columns = this.getColumns(rows);
+
   var row1 = this.board[0];
   var row2 = this.board[1];
   var row3 = this.board[2];
@@ -78,6 +89,53 @@ TicTacToe.prototype.winner = function() {
   }
 
   return "draw";
+};
+
+// Helper function to store the rows on the board.
+TicTacToe.prototype.getRows = function(size) {
+  var rows = [];
+
+  // Populate the row arrays.
+  for (var i = 0; i < size; i++) {
+    var row = [];
+
+    for (var j = 0; j < size; j++) {
+      row.push(this.board[i][j]);
+    }
+
+    rows.push(row);
+  }
+
+  return rows;
+};
+
+// Helper function to store the columns on the board.
+TicTacToe.prototype.getColumns = function(rows) {
+  var columns = [];
+
+  // Initialize the columns arrays.
+  rows.forEach(function() {
+    columns.push([]);
+  });
+
+  // Populate the column arrays.
+  for (var i = 0; i < rows.length; i++) {
+    for (var j = 0; j < rows.length; j++) {
+      columns[j][i] = rows[i][j];
+    }
+  }
+
+  return columns;
+};
+
+// Helper function for printing the board.
+TicTacToe.prototype.printBoard = function(size) {
+  console.log("Printing the board...");
+
+  for (var i = 0; i < size; i++) {
+    var row = this.board[i];
+    console.log(row.toString());
+  }
 };
 
 module.exports = TicTacToe;
