@@ -119,6 +119,11 @@ TicTacToe.prototype.checkWinner = function(rows, columns, diagonals) {
     outcome = this.checkArrays(diagonals);
   }
 
+  if (outcome !== "o" && outcome !== "x") {
+    // Check if the game has been left unfinished.
+    outcome = this.checkIfUnfinished(rows);
+  }
+
   if (outcome !== "o" && outcome !== "x" && outcome !== "unfinished") {
     outcome = "draw";
   }
@@ -145,6 +150,21 @@ TicTacToe.prototype.checkArrays = function(arr) {
 
     if (checkForX) {
       outcome = "x";
+    }
+  }
+
+  return outcome;
+};
+
+// Checks if the game is unfinished.
+TicTacToe.prototype.checkIfUnfinished = function(arr) {
+  let outcome = "";
+
+  for (let i in arr) {
+    let checkForBlank = arr[i].includes(" ");
+
+    if (checkForBlank) {
+      outcome = "unfinished";
     }
   }
 
