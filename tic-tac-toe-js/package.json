@@ -4,11 +4,12 @@
   "description": "Tic Tac Toe Code Challenge",
   "main": "tic-tac-toe.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha -g 'first row'"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "eslint": "^5.2.0",
+    "mocha": "^5.2.0"
   }
 }

@@ -6,32 +6,39 @@ TicTacToe.prototype.winner = function() {
   var row1 = this.board[0];
   var row2 = this.board[1];
   var row3 = this.board[2];
+  var result = "draw";
 
+  this.board.forEach(boxes => {
+    if (boxes.every(v => v === boxes[0])) {
+      if (boxes[0].trim() !== "") result = boxes[0];
+    }
+  })
+  return result;
   // row checks
 
-  if (row1[0] == "o" && row1[1] == "o" && row1[2] == "o") {
-    return "o";
-  }
+  // if (row1[0] == "o" && row1[1] == "o" && row1[2] == "o") {
+  //   return "o";
+  // }
 
-  if (row2[0] == "o" && row2[1] == "o" && row2[2] == "o") {
-    return "o"
-  }
+  // if (row2[0] == "o" && row2[1] == "o" && row2[2] == "o") {
+  //   return "o"
+  // }
 
-  if (row3[0] == "o" && row3[1] == "o" && row3[2] == "o") {
-    return "o"
-  }
+  // if (row3[0] == "o" && row3[1] == "o" && row3[2] == "o") {
+  //   return "o"
+  // }
 
-  if (row1[0] == "x" && row1[1] == "x" && row1[2] == "x") {
-    return "x"
-  }
+  // if (row1[0] == "x" && row1[1] == "x" && row1[2] == "x") {
+  //   return "x"
+  // }
 
-  if (row2[0] == "x" && row2[1] == "x" && row2[2] == "x") {
-    return "x"
-  }
+  // if (row2[0] == "x" && row2[1] == "x" && row2[2] == "x") {
+  //   return "x"
+  // }
 
-  if (row3[0] == "x" && row3[1] == "x" && row3[2] == "x") {
-    return "x"
-  }
+  // if (row3[0] == "x" && row3[1] == "x" && row3[2] == "x") {
+  //   return "x"
+  // }
 
   // column checks
 
