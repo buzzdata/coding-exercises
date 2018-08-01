@@ -2,89 +2,67 @@ var TicTacToe = function(board) {
   this.board = board;
 };
 
+var hasWinningFormula = function(boxes) {
+  if (boxes.every(v => v === boxes[0])) {
+    if (boxes[0].trim() !== "") return true;
+  }
+  return false;
+}
+
 TicTacToe.prototype.winner = function() {
-  var row1 = this.board[0];
-  var row2 = this.board[1];
-  var row3 = this.board[2];
-  var result = "draw";
+  var result;
 
-  this.board.forEach(boxes => {
-    if (boxes.every(v => v === boxes[0])) {
-      if (boxes[0].trim() !== "") result = boxes[0];
-    }
-  })
-  return result;
   // row checks
+  this.board.forEach(boxes => {
+    if (hasWinningFormula(boxes)) result = boxes[0]
+  });
 
-  // if (row1[0] == "o" && row1[1] == "o" && row1[2] == "o") {
-  //   return "o";
-  // }
-
-  // if (row2[0] == "o" && row2[1] == "o" && row2[2] == "o") {
-  //   return "o"
-  // }
-
-  // if (row3[0] == "o" && row3[1] == "o" && row3[2] == "o") {
-  //   return "o"
-  // }
-
-  // if (row1[0] == "x" && row1[1] == "x" && row1[2] == "x") {
-  //   return "x"
-  // }
-
-  // if (row2[0] == "x" && row2[1] == "x" && row2[2] == "x") {
-  //   return "x"
-  // }
-
-  // if (row3[0] == "x" && row3[1] == "x" && row3[2] == "x") {
-  //   return "x"
-  // }
+  if(result) return result;
 
   // column checks
-
-  if (row1[0] == "o" && row2[0] == "o" && row3[0] == "o") {
-    return "o"
+  for( var i = 0; i < this.board.length;i++) {
+    var columns = [];
+    this.board.forEach( (boxes) => {
+      columns.push(boxes[i]);
+    });
+    if (hasWinningFormula(columns)) result = columns[0]
   }
 
-  if (row1[1] == "o" && row2[1] == "o" && row3[1] == "o") {
-    return "o"
-  }
+  if(result) return result;
 
-  if (row1[2] == "o" && row2[2] == "o" && row3[2] == "o") {
-    return "o"
-  }
+  // forward diagonal checks
+  var diagonals = [];
+  this.board.forEach( (boxes, i) => {
+    var TotalBoards = this.board.length - 1;
+    boxes.forEach((box, j) => {
+      if( j + i === TotalBoards ) {
+        diagonals.push(box);
+      }
+    })
+  });
 
-  if (row1[0] == "x" && row2[0] == "x" && row3[0] == "x") {
-    return "x"
-  }
+  if (hasWinningFormula(diagonals)) result = diagonals[0];
 
-  if (row1[1] == "x" && row2[1] == "x" && row3[1] == "x") {
-    return "x"
-  }
+  if(result) return result;
 
-  if (row1[2] == "x" && row2[2] == "x" && row3[2] == "x") {
-    return "x"
-  }
+  // backward diagonal checks
+  var diagonals = [];
+  this.board.forEach( (boxes, i) => {
+    diagonals.push(boxes[i]);
+  });
 
-  // diagonal checks
+  if (hasWinningFormula(diagonals)) result = diagonals[0];
 
-  if (row1[0] == "o" && row2[1] == "o" && row3[2] == "o") {
-    return "o"
-  }
+  if(result) return result;
 
-  if (row1[2] == "o" && row2[1] == "o" && row3[0] == "o") {
-    return "o"
-  }
+  // draw check
+  this.board.forEach(boxes => {
+    if(boxes.some(v => v.trim() === "")) result = "unfinished"
+  });
 
-  if (row1[0] == "x" && row2[1] == "x" && row3[2] == "x") {
-    return "x"
-  }
+  if(result) return result;
 
-  if (row1[2] == "x" && row2[1] == "x" && row3[0] == "x") {
-    return "x"
-  }
-
-  return "draw"
+  return "draw";
 };
 
 module.exports = TicTacToe;

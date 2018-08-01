@@ -207,6 +207,42 @@ describe("TicTacToe", function () {
     });
   });
 
+  describe("10 x 10 board", function () {
+    it("returns the correct winner when match found on a row", function () {
+      var board = [
+        ["o", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
+        ["x", "x", " ", " ", " ", "x", "x", " ", " ", " "],
+        ["x", "x", "x", " ", " ", "x", "x", "x", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+        ["o", "o", "o", "o", " ", "o", "o", "o", "o", "o"],
+        ["x", "x", " ", " ", " ", "x", "x", " ", " ", " "],
+        ["x", "x", "x", " ", " ", "x", "x", "x", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
+      ];
+
+      assert.equal((new TicTacToe(board)).winner(), "o");
+    });
+
+    it("returns the correct winner when match found on a backward diagonal", function () {
+      var board = [
+        ["x", "o", "o", "o", "o", "o", "o", "o", "o", "o"],
+        ["x", "x", " ", " ", " ", "x", "x", " ", " ", " "],
+        ["x", "x", "x", " ", " ", "x", "x", "x", " ", " "],
+        [" ", " ", " ", "x", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", "x", " ", " ", " ", " ", " "],
+        ["o", "o", "o", "o", " ", "x", "o", "o", "o", "o"],
+        ["x", "x", " ", " ", " ", "x", "x", " ", " ", " "],
+        ["x", "x", "x", " ", " ", "x", "x", "x", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", "x", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", " ", "x"]
+      ];
+
+      assert.equal((new TicTacToe(board)).winner(), "x");
+    });
+  });
+
   describe("unfinished", function () {
     it("returns 'unfinished' when the board not finished yet", function () {
       var board = [
