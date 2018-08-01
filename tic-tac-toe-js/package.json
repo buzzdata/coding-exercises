@@ -4,8 +4,7 @@
   "description": "Tic Tac Toe Code Challenge",
   "main": "tic-tac-toe.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "col": "./node_modules/mocha/bin/mocha -g 'unfinished'"
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "author": "",
   "license": "ISC",

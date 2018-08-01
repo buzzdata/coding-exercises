@@ -19,6 +19,16 @@ TicTacToe.prototype.winner = function() {
 
   if(result) return result;
 
+  // backward diagonal checks
+  var diagonals = [];
+  this.board.forEach( (boxes, i) => {
+    diagonals.push(boxes[i]);
+  });
+
+  if (hasWinningFormula(diagonals)) result = diagonals[0];
+
+  if(result) return result;
+
   // column checks
   for( var i = 0; i < this.board.length;i++) {
     var columns = [];
@@ -39,16 +49,6 @@ TicTacToe.prototype.winner = function() {
         diagonals.push(box);
       }
     })
-  });
-
-  if (hasWinningFormula(diagonals)) result = diagonals[0];
-
-  if(result) return result;
-
-  // backward diagonal checks
-  var diagonals = [];
-  this.board.forEach( (boxes, i) => {
-    diagonals.push(boxes[i]);
   });
 
   if (hasWinningFormula(diagonals)) result = diagonals[0];
