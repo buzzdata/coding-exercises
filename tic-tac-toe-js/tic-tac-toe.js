@@ -14,7 +14,7 @@ TicTacToe.prototype.winner = function() {
 
   // row checks
   this.board.forEach(boxes => {
-    if (hasWinningFormula(boxes)) result = boxes[0]
+    if (hasWinningFormula(boxes)) result = boxes[0];
   });
 
   if(result) return result;
@@ -35,7 +35,7 @@ TicTacToe.prototype.winner = function() {
     this.board.forEach( (boxes) => {
       columns.push(boxes[i]);
     });
-    if (hasWinningFormula(columns)) result = columns[0]
+    if (hasWinningFormula(columns)) result = columns[0];
   }
 
   if(result) return result;

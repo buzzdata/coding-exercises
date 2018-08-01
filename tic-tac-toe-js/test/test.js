@@ -241,6 +241,23 @@ describe("TicTacToe", function () {
 
       assert.equal((new TicTacToe(board)).winner(), "x");
     });
+
+    it("returns the correct winner when match found on a ninth column", function () {
+      var board = [
+        ["x", "o", "o", "o", "o", "o", "o", "o", "x", "o"],
+        ["x", "o", " ", " ", " ", "x", "x", " ", "x", " "],
+        ["x", "x", "x", " ", " ", "x", "x", "x", "x", " "],
+        [" ", " ", " ", "o", " ", " ", " ", " ", "x", " "],
+        [" ", " ", " ", " ", "x", " ", " ", " ", "x", " "],
+        ["o", "o", "o", "o", " ", "x", "o", "o", "x", "o"],
+        ["x", "x", " ", " ", " ", "x", "x", " ", "x", " "],
+        ["x", "x", "x", " ", " ", "x", "x", "o", "x", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", "x", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " ", "x", "x"]
+      ];
+
+      assert.equal((new TicTacToe(board)).winner(), "x");
+    });
   });
 
   describe("unfinished", function () {
