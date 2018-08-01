@@ -244,6 +244,16 @@ describe("TicTacToe", function () {
   });
 
   describe("unfinished", function () {
+    it("returns 'unfinished' when the game haven't started yet", function () {
+      var board = [
+        [" ", " ", " "],
+        [" ", " ", " "],
+        [" ", " ", " "]
+      ];
+
+      assert.equal((new TicTacToe(board)).winner(), "unfinished");
+    });
+
     it("returns 'unfinished' when the board not finished yet", function () {
       var board = [
         ["o", "x", "o"],
