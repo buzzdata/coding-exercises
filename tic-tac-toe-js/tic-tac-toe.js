@@ -1,83 +1,182 @@
-var TicTacToe = function(board) {
-  this.board = board;
+class TicTacToe {
+  constructor(board) {
+    this.board = board;
+  }
+}
+
+// Determines the winner of the game.
+TicTacToe.prototype.winner = function() {
+  "use strict";
+
+  // Get the rows, columns and diagonals.
+  let length = this.board.length;
+  let rows = this.getRows(length);
+  let columns = this.getColumns(rows);
+  let diagonals = this.getDiagonals(rows);
+
+  return this.checkOutcomes(rows, columns, diagonals);
 };
 
-TicTacToe.prototype.winner = function() {
-  var row1 = this.board[0];
-  var row2 = this.board[1];
-  var row3 = this.board[2];
+// Determines the outcome.
+TicTacToe.prototype.checkOutcomes = function(rows, columns, diagonals) {
+  let outcome = "";
 
-  // row checks
+  // Check the rows for any winners.
+  outcome = this.checkArrayWinners(rows);
 
-  if (row1[0] == "o" && row1[1] == "o" && row1[2] == "o") {
-    return "o";
+  if (outcome !== "o" && outcome !== "x") {
+    // Check the columns for any winners.
+    outcome = this.checkArrayWinners(columns);
   }
 
-  if (row2[0] == "o" && row2[1] == "o" && row2[2] == "o") {
-    return "o"
+  if (outcome !== "o" && outcome !== "x") {
+    // Check the diagonals for any winners.
+    outcome = this.checkArrayWinners(diagonals);
   }
 
-  if (row3[0] == "o" && row3[1] == "o" && row3[2] == "o") {
-    return "o"
+  if (outcome !== "o" && outcome !== "x") {
+    // Check if the game has been left unfinished.
+    outcome = this.checkIfUnfinished(rows);
   }
 
-  if (row1[0] == "x" && row1[1] == "x" && row1[2] == "x") {
-    return "x"
+  if (outcome !== "o" && outcome !== "x" && outcome !== "unfinished") {
+    // Otherwise, the game is a draw.
+    outcome = "draw";
   }
 
-  if (row2[0] == "x" && row2[1] == "x" && row2[2] == "x") {
-    return "x"
+  return outcome;
+};
+
+// Checks the arrays for a winner.
+TicTacToe.prototype.checkArrayWinners = function(arr) {
+  let outcome = "";
+
+  for (let i in arr) {
+    // Check if every value in the array is an "o".
+    outcome = this.checkEachTile(arr[i], "o", outcome);
+
+    // Check if every value in the array is an "x".
+    outcome = this.checkEachTile(arr[i], "x", outcome);
   }
 
-  if (row3[0] == "x" && row3[1] == "x" && row3[2] == "x") {
-    return "x"
+  return outcome;
+};
+
+// Checks each tile of the array for a match.
+TicTacToe.prototype.checkEachTile = function(arr, letter, outcome) {
+  // Check if every value in the array is the same.
+  let winner = arr.every((value, index, array) => {
+    return value === letter;
+  });
+
+  if (winner) {
+    outcome = letter;
   }
 
-  // column checks
+  return outcome;
+};
 
-  if (row1[0] == "o" && row2[0] == "o" && row3[0] == "o") {
-    return "o"
+// Checks if the game is unfinished.
+TicTacToe.prototype.checkIfUnfinished = function(arr) {
+  let outcome = "";
+
+  for (let i in arr) {
+    let checkForBlank = arr[i].includes(" ");
+
+    if (checkForBlank) {
+      outcome = "unfinished";
+    }
   }
 
-  if (row1[1] == "o" && row2[1] == "o" && row3[1] == "o") {
-    return "o"
+  return outcome;
+};
+
+// Helper function to store the rows on the board.
+TicTacToe.prototype.getRows = function(size) {
+  let rows = [];
+
+  // Populate the row arrays.
+  for (let i = 0; i < size; i++) {
+    let row = [];
+
+    for (let j = 0; j < size; j++) {
+      row.push(this.board[i][j]);
+    }
+
+    rows.push(row);
   }
 
-  if (row1[2] == "o" && row2[2] == "o" && row3[2] == "o") {
-    return "o"
+  return rows;
+};
+
+// Helper function to store the columns on the board.
+TicTacToe.prototype.getColumns = function(rows) {
+  let columns = [];
+
+  // Initialize the columns arrays.
+  rows.forEach(() => {
+    columns.push([]);
+  });
+
+  // Populate the column arrays.
+  for (let i = 0; i < rows.length; i++) {
+    for (let j = 0; j < rows.length; j++) {
+      columns[j][i] = rows[i][j];
+    }
   }
 
-  if (row1[0] == "x" && row2[0] == "x" && row3[0] == "x") {
-    return "x"
+  return columns;
+};
+
+// Helper function to store the diagonals on the board.
+TicTacToe.prototype.getDiagonals = function(rows) {
+  // Will always only be two diagonals.
+  let diagonals = [];
+  let forwardDiagonal = [];
+  let backwardDiagonal = [];
+
+  // Start with the forward diagonal.
+  let pointer = rows.length - 1;
+
+  // Populate the forward diagonal.
+  for (let i = 0; i < rows.length; i++) {
+    for (let j = 0; j < rows.length; j++) {
+      if (j === pointer) {
+        forwardDiagonal.push(rows[i][j]);
+        pointer--;
+        break;
+      }
+    }
   }
 
-  if (row1[1] == "x" && row2[1] == "x" && row3[1] == "x") {
-    return "x"
+  // Reset for the backwards diagonal.
+  pointer = 0;
+
+  // Populate the backward diagonal.
+  for (let i = 0; i < rows.length; i++) {
+    for (let j = 0; j < rows.length; j++) {
+      if (j === pointer) {
+        backwardDiagonal.push(rows[i][j]);
+        pointer++;
+        break;
+      }
+    }
   }
 
-  if (row1[2] == "x" && row2[2] == "x" && row3[2] == "x") {
-    return "x"
+  diagonals.push(forwardDiagonal);
+  diagonals.push(backwardDiagonal);
+
+  return diagonals;
+};
+
+// Helper function for printing the board.
+TicTacToe.prototype.printBoard = function(size) {
+  console.log("Printing the board...");
+
+  for (let i = 0; i < size; i++) {
+    let row = this.board[i];
+    console.log(row.toString());
   }
-
-  // diagonal checks
-
-  if (row1[0] == "o" && row2[1] == "o" && row3[2] == "o") {
-    return "o"
-  }
-
-  if (row1[2] == "o" && row2[1] == "o" && row3[0] == "o") {
-    return "o"
-  }
-
-  if (row1[0] == "x" && row2[1] == "x" && row3[2] == "x") {
-    return "x"
-  }
-
-  if (row1[2] == "x" && row2[1] == "x" && row3[0] == "x") {
-    return "x"
-  }
-
-  return "draw"
 };
 
 module.exports = TicTacToe;

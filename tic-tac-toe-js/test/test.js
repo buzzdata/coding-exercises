@@ -157,7 +157,7 @@ describe("TicTacToe", function () {
     });
   });
 
-  xdescribe("5 x 5 board", function () {
+  describe("5 x 5 board", function () {
     it("returns the correct winner when match found on a row", function () {
       var board = [
         ["o", "o", "o", "o", "o"],
@@ -207,7 +207,7 @@ describe("TicTacToe", function () {
     });
   });
 
-  xdescribe("unfinished", function () {
+  describe("unfinished", function () {
     it("returns 'unfinished' when the board not finished yet", function () {
       var board = [
         ["o", "x", "o"],
@@ -216,6 +216,35 @@ describe("TicTacToe", function () {
       ];
 
       assert.equal((new TicTacToe(board)).winner(), "unfinished");
+    });
+  });
+
+  describe("extra", function () {
+    it("returns 'unfinished' when board is empty", function () {
+      var board = [
+        [" ", " ", " "],
+        [" ", " ", " "],
+        [" ", " ", " "]
+      ];
+
+      assert.equal((new TicTacToe(board)).winner(), "unfinished");
+    });
+
+    it("returns the correct winner when match found on a forward diagonal (10 x 10 board)", function () {
+      var board = [
+        [" ", "x", "x", " ", "o", " ", "x", "x", " ", "o"],
+        [" ", "x", " ", "o", " ", " ", "x", " ", "o", " "],
+        ["x", "x", "o", " ", " ", "x", "x", "o", " ", " "],
+        [" ", "o", " ", " ", " ", " ", "o", " ", " ", " "],
+        ["o", " ", " ", " ", " ", "o", " ", " ", " ", " "],
+        [" ", "x", "x", " ", "o", " ", " ", " ", " ", " "],
+        [" ", "x", " ", "o", " ", " ", " ", " ", " ", " "],
+        ["x", "x", "o", " ", " ", " ", " ", " ", " ", " "],
+        [" ", "o", " ", " ", " ", " ", " ", " ", " ", " "],
+        ["o", " ", " ", " ", " ", " ", " ", " ", " ", " "]
+      ];
+
+      assert.equal((new TicTacToe(board)).winner(), "o");
     });
   });
 });
