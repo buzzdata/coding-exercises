@@ -9,21 +9,34 @@ var hasWinningFormula = function(rows) {
   return false;
 };
 
+var hasWinningFormulaV2 = (row, value) => row.every(v => v === value);
+
 TicTacToe.prototype.winner = function() {
   var result;
+  const values = ["o", "x"]
 
   // row checks
-  this.board.forEach(rows => {
-    if (hasWinningFormula(rows)) result = rows[0];
-  });
+  // this.board.forEach(rows => {
+  //   if (hasWinningFormula(rows)) result = rows[0];
+  // });
 
-  if (result) return result;
+  // if (result) return result;
+  for( let rowIndex in this.board ) {
+    for ( let v in values) {
+      if(hasWinningFormulaV2(this.board[rowIndex], values[v])) return values[v];
+    }
+  }
+
+  // if(result) return result;
+
+
 
   // backward diagonal checks
-  var diagonals = [];
-  this.board.forEach((rows, i) => {
-    diagonals.push(rows[i]);
-  });
+  var diagonals = this.board.map((row, i) => row[i]);
+  // var diagonals = [];
+  // this.board.forEach((rows, i) => {
+  //   diagonals.push(rows[i]);
+  // });
 
   if (hasWinningFormula(diagonals)) result = diagonals[0];
 
@@ -35,32 +48,37 @@ TicTacToe.prototype.winner = function() {
     this.board.forEach(rows => {
       columns.push(rows[i]);
     });
-    if (hasWinningFormula(columns)) result = columns[0];
+    if (hasWinningFormula(columns)) return columns[0];
   }
 
-  if (result) return result;
+  // if (result) return result;
 
   // forward diagonal checks
-  var diagonals = [];
-  this.board.forEach((rows, i) => {
-    var TotalBoards = this.board.length - 1;
-    rows.forEach((box, j) => {
-      if (j + i === TotalBoards) {
-        diagonals.push(box);
-      }
-    });
-  });
+  var _ = this.board.map((row, i) => row[row.length - 1 - i]);
+  // this.board.forEach((rows, i) => {
+  //   var TotalBoards = this.board.length - 1;
+  //   rows.forEach((box, j) => {
+  //     if (j + i === TotalBoards) {
+  //       diagonals.push(box);
+  //     }
+  //   });
+  // });
 
   if (hasWinningFormula(diagonals)) result = diagonals[0];
 
   if (result) return result;
 
   // unfinished check
-  this.board.forEach(rows => {
-    if (rows.some(v => v.trim() === "")) result = "unfinished";
-  });
+  if(
+    this.board
+      .some((row) => row.some(v => v === " "))
+  ) return "unfinished";
 
-  if (result) return result;
+  // this.board.forEach(rows => {
+  //   if (rows.some(v => v.trim() === "")) result = "unfinished";
+  // });
+
+  // if (result) return result;
 
   return "draw";
 };
