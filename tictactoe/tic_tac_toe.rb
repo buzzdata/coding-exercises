@@ -1,83 +1,51 @@
+require 'matrix'
 class TicTacToe
   def initialize(board)
-    @board = board
+    @board = Matrix[*board]
+    @board_dimension = board.first.size
   end
 
   def winner
-    row1 = @board[0]
-    row2 = @board[1]
-    row3 = @board[2]
+    return 'o' if lines_for('o')
+    return 'x' if lines_for('x')
 
-    # row checks
+    return 'o' if columns_for('o')
+    return 'x' if columns_for('x')
 
-    if row1[0] == "o" && row1[1] == "o" && row1[2] == "o"
-      return "o"
+    return 'o' if diagonals_for('o')
+    return 'x' if diagonals_for('x')
+
+    'draw'
+  end
+
+  private
+
+  def lines_for(string)
+    @board_dimension.times do |i|
+      return true if @board.row(i).uniq == [string]
     end
 
-    if row2[0] == "o" && row2[1] == "o" && row2[2] == "o"
-      return "o"
+    false
+  end
+
+  def columns_for(string)
+    @board_dimension.times do |i|
+      return true if @board.column(i).uniq == [string]
     end
 
-    if row3[0] == "o" && row3[1] == "o" && row3[2] == "o"
-      return "o"
-    end
+    false
+  end
 
-    if row1[0] == "x" && row1[1] == "x" && row1[2] == "x"
-      return "x"
-    end
+  def diagonals_for(string)
+    return true if @board.each(:diagonal).to_a.uniq == [string]
 
-    if row2[0] == "x" && row2[1] == "x" && row2[2] == "x"
-      return "x"
-    end
+    return true if matrix_reverse.each(:diagonal).to_a.uniq == [string]
 
-    if row3[0] == "x" && row3[1] == "x" && row3[2] == "x"
-      return "x"
-    end
+    false
+  end
 
-    # column checks
-
-    if row1[0] == "o" && row2[0] == "o" && row3[0] == "o"
-      return "o"
-    end
-
-    if row1[1] == "o" && row2[1] == "o" && row3[1] == "o"
-      return "o"
-    end
-
-    if row1[2] == "o" && row2[2] == "o" && row3[2] == "o"
-      return "o"
-    end
-
-    if row1[0] == "x" && row2[0] == "x" && row3[0] == "x"
-      return "x"
-    end
-
-    if row1[1] == "x" && row2[1] == "x" && row3[1] == "x"
-      return "x"
-    end
-
-    if row1[2] == "x" && row2[2] == "x" && row3[2] == "x"
-      return "x"
-    end
-
-    # diagonal checks
-
-    if row1[0] == "o" && row2[1] == "o" && row3[2] == "o"
-      return "o"
-    end
-
-    if row1[2] == "o" && row2[1] == "o" && row3[0] == "o"
-      return "o"
-    end
-
-    if row1[0] == "x" && row2[1] == "x" && row3[2] == "x"
-      return "x"
-    end
-
-    if row1[2] == "x" && row2[1] == "x" && row3[0] == "x"
-      return "x"
-    end
-
-    return "draw"
+  def matrix_reverse
+    revert_matrix = @board.to_a.map(&:reverse)
+    Matrix[*revert_matrix]
   end
 end
