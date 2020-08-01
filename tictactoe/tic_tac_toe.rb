@@ -6,34 +6,27 @@ class TicTacToe
   end
 
   def winner
-    return 'o' if lines_for('o')
-    return 'x' if lines_for('x')
+    return 'o' if victory_for?('o')
 
-    return 'o' if columns_for('o')
-    return 'x' if columns_for('x')
+    return 'x' if victory_for?('x')
 
-    return 'o' if diagonals_for('o')
-    return 'x' if diagonals_for('x')
-
-    return 'unfinished' if unfinished_game?
-
-    'draw'
+    unfinished_game? ? 'unfinished' : 'draw'
   end
 
   private
 
+  def victory_for?(string)
+    lines_for(string) || columns_for(string) || diagonals_for(string)
+  end
+
   def lines_for(string)
-    @board_dimension.times do |i|
-      return true if @board.row(i).uniq == [string]
-    end
+    @board_dimension.times { |i| return true if @board.row(i).uniq == [string] }
 
     false
   end
 
   def columns_for(string)
-    @board_dimension.times do |i|
-      return true if @board.column(i).uniq == [string]
-    end
+    @board_dimension.times { |i| return true if @board.column(i).uniq == [string] }
 
     false
   end
