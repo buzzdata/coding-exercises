@@ -15,6 +15,8 @@ class TicTacToe
     return 'o' if diagonals_for('o')
     return 'x' if diagonals_for('x')
 
+    return 'unfinished' if unfinished_game?
+
     'draw'
   end
 
@@ -47,5 +49,9 @@ class TicTacToe
   def matrix_reverse
     revert_matrix = @board.to_a.map(&:reverse)
     Matrix[*revert_matrix]
+  end
+
+  def unfinished_game?
+    @board.to_a.flatten.include?(' ')
   end
 end
